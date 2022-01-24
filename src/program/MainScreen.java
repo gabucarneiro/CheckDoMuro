@@ -18,11 +18,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import entities.Bloco;
+import entities.Cimento;
 import entities.Muro;
 import entities.Terreno;
 import operations.ConstruirMuro;
+import javax.swing.JCheckBox;
+import javax.swing.JTextPane;
 
 public class MainScreen {
 
@@ -68,12 +73,12 @@ public class MainScreen {
 	private void initialize() {
 		frmCalculandoAQuantidade = new JFrame();
 		frmCalculandoAQuantidade.setResizable(false);
-		frmCalculandoAQuantidade.getContentPane().setBackground(new Color(153, 255, 204));
+		frmCalculandoAQuantidade.getContentPane().setBackground(new Color(224, 255, 255));
 		frmCalculandoAQuantidade.getContentPane().setForeground(Color.BLACK);
 		frmCalculandoAQuantidade.setTitle("Calculando a quantidade de blocos para o muro");
 		frmCalculandoAQuantidade.setForeground(Color.BLACK);
 		frmCalculandoAQuantidade.setBackground(Color.YELLOW);
-		frmCalculandoAQuantidade.setBounds(100, 100, 461, 695);
+		frmCalculandoAQuantidade.setBounds(100, 100, 461, 748);
 		frmCalculandoAQuantidade.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCalculandoAQuantidade.getContentPane().setLayout(null);
 				
@@ -88,7 +93,7 @@ public class MainScreen {
 		etAlturaDoMuro.setText("2");
 		etAlturaDoMuro.setHorizontalAlignment(SwingConstants.CENTER);
 		etAlturaDoMuro.setToolTipText("Altura do muro");
-		etAlturaDoMuro.setBounds(43, 262, 86, 20);
+		etAlturaDoMuro.setBounds(50, 262, 86, 20);
 		frmCalculandoAQuantidade.getContentPane().add(etAlturaDoMuro);
 		etAlturaDoMuro.setColumns(10);
 		
@@ -168,9 +173,9 @@ public class MainScreen {
 		lblLadoDireito.setBounds(303, 68, 86, 14);
 		frmCalculandoAQuantidade.getContentPane().add(lblLadoDireito);
 		
-		JLabel lblAlturaDoMuro = new JLabel("Altura do muro");
+		JLabel lblAlturaDoMuro = new JLabel("Altura do muro (m)");
 		lblAlturaDoMuro.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAlturaDoMuro.setBounds(43, 247, 86, 14);
+		lblAlturaDoMuro.setBounds(37, 247, 112, 14);
 		frmCalculandoAQuantidade.getContentPane().add(lblAlturaDoMuro);
 		
 		JLabel tvValorBlocoLinha = new JLabel("R$ 0,00");
@@ -200,7 +205,7 @@ public class MainScreen {
 		tvQuantidadeBlocoLinha.setBounds(122, 560, 112, 14);
 		frmCalculandoAQuantidade.getContentPane().add(tvQuantidadeBlocoLinha);
 		
-		JLabel tv_BlocosTotais = new JLabel("Blocos por linha:");
+		JLabel tv_BlocosTotais = new JLabel("Blocos totais:");
 		tv_BlocosTotais.setHorizontalAlignment(SwingConstants.RIGHT);
 		tv_BlocosTotais.setBounds(10, 584, 102, 14);
 		frmCalculandoAQuantidade.getContentPane().add(tv_BlocosTotais);
@@ -209,7 +214,7 @@ public class MainScreen {
 		tvQuantidadeBlocoTotais.setBounds(122, 584, 112, 14);
 		frmCalculandoAQuantidade.getContentPane().add(tvQuantidadeBlocoTotais);
 		
-		JLabel tv_Largura = new JLabel("Largura");
+		JLabel tv_Largura = new JLabel("Largura (m)");
 		tv_Largura.setHorizontalAlignment(SwingConstants.CENTER);
 		tv_Largura.setBounds(266, 437, 86, 14);
 		frmCalculandoAQuantidade.getContentPane().add(tv_Largura);
@@ -228,7 +233,7 @@ public class MainScreen {
 		etLarguraDoBloco.setBounds(266, 453, 86, 20);
 		frmCalculandoAQuantidade.getContentPane().add(etLarguraDoBloco);
 		
-		JLabel tv_Altura = new JLabel("Altura");
+		JLabel tv_Altura = new JLabel("Altura (m)");
 		tv_Altura.setHorizontalAlignment(SwingConstants.CENTER);
 		tv_Altura.setBounds(63, 371, 86, 14);
 		frmCalculandoAQuantidade.getContentPane().add(tv_Altura);
@@ -247,7 +252,7 @@ public class MainScreen {
 		etAlturaDoBloco.setBounds(63, 384, 86, 20);
 		frmCalculandoAQuantidade.getContentPane().add(etAlturaDoBloco);
 		
-		JLabel tv_Base = new JLabel("Base");
+		JLabel tv_Base = new JLabel("Base (m)");
 		tv_Base.setHorizontalAlignment(SwingConstants.CENTER);
 		tv_Base.setBounds(92, 424, 86, 14);
 		frmCalculandoAQuantidade.getContentPane().add(tv_Base);
@@ -314,7 +319,59 @@ public class MainScreen {
 		tv_Terreno.setHorizontalAlignment(SwingConstants.CENTER);
 		tv_Terreno.setFont(new Font("Tahoma", Font.BOLD, 19));
 		tv_Terreno.setBounds(115, 11, 224, 31);
-		frmCalculandoAQuantidade.getContentPane().add(tv_Terreno);
+		frmCalculandoAQuantidade.getContentPane().add(tv_Terreno);		
+
+		JLabel tv_qntSacosCimento = new JLabel("Sacos de cimento:");
+		tv_qntSacosCimento.setHorizontalAlignment(SwingConstants.RIGHT);
+		tv_qntSacosCimento.setForeground(Color.RED);
+		tv_qntSacosCimento.setBounds(-7, 606, 119, 14);
+		frmCalculandoAQuantidade.getContentPane().add(tv_qntSacosCimento);
+		
+		JLabel tvqntSacosCimento = new JLabel("0");
+		tvqntSacosCimento.setForeground(Color.RED);
+		tvqntSacosCimento.setBounds(122, 606, 51, 14);
+		frmCalculandoAQuantidade.getContentPane().add(tvqntSacosCimento);
+		
+		JLabel tv_valorSacosCimento = new JLabel("Valor do cimento:");
+		tv_valorSacosCimento.setHorizontalAlignment(SwingConstants.RIGHT);
+		tv_valorSacosCimento.setForeground(Color.RED);
+		tv_valorSacosCimento.setBounds(194, 606, 119, 14);
+		frmCalculandoAQuantidade.getContentPane().add(tv_valorSacosCimento);
+
+		JLabel tvvalorSacosCimento = new JLabel("R$ 0,00");
+		tvvalorSacosCimento.setForeground(Color.RED);
+		tvvalorSacosCimento.setBounds(323, 606, 112, 14);
+		frmCalculandoAQuantidade.getContentPane().add(tvvalorSacosCimento);
+		
+
+		JCheckBox cbTerrenoLock = new JCheckBox("Feito!");
+		cbTerrenoLock.setFont(new Font("Dialog", Font.BOLD, 15));
+		cbTerrenoLock.setBackground(new Color(224, 255, 255));
+		cbTerrenoLock.setBounds(369, 154, 78, 24);
+		cbTerrenoLock.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(cbTerrenoLock.isSelected()) {
+					etFrente.setEnabled(false);
+					etLadoEsquerdo.setEnabled(false);
+					etLadoDireito.setEnabled(false);
+					etFundo.setEnabled(false);
+				}
+				else {
+					etFrente.setEnabled(true);
+					etLadoEsquerdo.setEnabled(true);
+					etLadoDireito.setEnabled(true);
+					etFundo.setEnabled(true);
+				}
+				
+			}
+		});
+		if(cbTerrenoLock.isSelected()) {
+			
+		}
+		frmCalculandoAQuantidade.getContentPane().add(cbTerrenoLock);
+		
 		
 		JButton btnCalculate = new JButton("Calcular");
 		btnCalculate.addActionListener(new ActionListener() {
@@ -361,17 +418,29 @@ public class MainScreen {
 				System.out.println("-------------------");
 				System.out.println(cm.toString());
 				tvValorBlocoLinha.setText("R$" + Double.parseDouble(String.valueOf(Math.nextUp(cm.getValorLinha()))));
-				tvValorBlocoTotal.setText("R$" + Math.nextUp(Double.parseDouble(String.valueOf(Math.nextUp(cm.getValorMuro())))));
+				tvValorBlocoTotal.setText("R$" + Math.round(Double.parseDouble(String.valueOf(Math.nextUp(cm.getValorMuro())))));
 				tvQuantidadeBlocoLinha.setText(String.valueOf(muro.quantidadeBlocosPorLinha()));
 				tvQuantidadeBlocoTotais.setText(String.valueOf(muro.quantidadeBlocosAltura(alturaDoMuro)));
 
 				System.out.println();
+
+				tvqntSacosCimento.setText(String.valueOf(new Cimento().qntSacosDeCimento(muro.quantidadeBlocosAltura(alturaDoMuro))));
+				tvvalorSacosCimento.setText("R$" + String.valueOf(new Cimento().valorSacosDeCimento(new Cimento().qntSacosDeCimento(muro.quantidadeBlocosAltura(alturaDoMuro)))));
+
+
+				JTextPane txtpnOsClculos = new JTextPane();
+				txtpnOsClculos.setEditable(false);
+				txtpnOsClculos.setFont(new Font("DialogInput", Font.BOLD, 12));
+				txtpnOsClculos.setBackground(new Color(255, 255, 204));
+				txtpnOsClculos.setText("* Os cálculos são para dar uma ideia de valores e quantidades");
+				txtpnOsClculos.setBounds(10, 650, 165, 54);
+				frmCalculandoAQuantidade.getContentPane().add(txtpnOsClculos);
 			}
 		});
 		
 
 		btnCalculate.setBackground(new Color(255, 255, 204));
-		btnCalculate.setBounds(177, 619, 89, 23);
+		btnCalculate.setBounds(177, 655, 89, 23);
 		frmCalculandoAQuantidade.getContentPane().add(btnCalculate);
 			
 		
@@ -388,9 +457,6 @@ public class MainScreen {
 		Image imgBlocoPng = new ImageIcon(this.getClass().getResource("/imgBloco.jpg")).getImage();
 		imgBloco.setIcon(new ImageIcon(imgBlocoPng));
 		frmCalculandoAQuantidade.getContentPane().add(imgBloco);
-		
-		
-		
 		
 	}
 }
